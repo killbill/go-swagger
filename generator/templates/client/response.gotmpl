@@ -22,6 +22,7 @@ type {{ pascalize .Name }} struct {
   {{ if .Schema }}
   Payload {{ if and (not .Schema.IsBaseType) (not .Schema.IsInterface) .Schema.IsComplexObject (not .Schema.IsStream) }}*{{ end }}{{ if (not .Schema.IsStream) }}{{ .Schema.GoType }}{{ else }}io.Writer{{end}}
   {{ end }}
+  HttpResponse runtime.ClientResponse
 }{{ if eq .Code -1 }}
 
 // Code gets the status code for the {{ humanize .Name }} response
@@ -112,8 +113,9 @@ type {{ pascalize .Name }}Reader struct {
 func ({{ .ReceiverName }} *{{ pascalize .Name }}Reader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
   {{ if .Responses}}switch response.Code() {
   {{ end }}{{ range .Responses }}
-    case {{ .Code }}:
+    case {{ .Code }}{{if eq .Code 201 }}, 200{{end}}:
       result := New{{ pascalize .Name }}({{ if .Schema }}{{ if .Schema.IsStream }}{{ $.ReceiverName }}.writer{{ end }}{{ end }})
+      result.HttpResponse = response
       if err := result.readResponse(response, consumer, {{ $.ReceiverName }}.formats); err != nil {
         return nil, err
       }
