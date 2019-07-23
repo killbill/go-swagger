@@ -276,7 +276,7 @@
 
 {{define "propertyvalidator" }}
   {{- if .IsPrimitive }}
-    {{- if .IsAliased }}
+    {{- if and .IsAliased (not .Enum) }}
       {{ template "objectvalidator" . }}
     {{- else }}
       {{ template "primitivefieldvalidator" . }}
@@ -322,6 +322,7 @@
   {{ if .Enum }}
     {{ if (eq .SwaggerType "string") }}
       {{ $gotype := .GoType }}
+type {{ $gotype }} string
 const (
       {{ range .Enum }}
   // {{ $gotype }}{{ pascalize . }} captures enum value {{ printf "%q" . }}
@@ -471,12 +472,28 @@ func init() {
         {{ if (eq .SwaggerType "string") }}
           {{ $gotype := .GoType }}
           {{ $propname := .Name }}
+type {{ $gotype }} string
 const (
           {{ range .Enum }}
   // {{ pascalize $.Name }}{{ pascalize $propname }}{{ pascalize . }} captures enum value {{ printf "%q" . }}
 	{{ pascalize $.Name }}{{ pascalize $propname }}{{ pascalize . }} {{ $gotype }} = {{ printf "%q" . }}
           {{ end }}
 )
+
+var {{ $gotype }}Values = []string {
+  {{range .Enum -}}
+  "{{ . }}",
+  {{ end }}
+}
+
+func (e {{ $gotype }}) IsValid() bool {
+  for _, v := range {{ $gotype }}Values {
+    if v == string(e) {
+      return true
+    }
+  }
+  return false
+}
         {{ end }}
 
 // prop value enum
@@ -488,6 +505,30 @@ func ({{ .ReceiverName }} *{{ if $.Discriminates }}{{ camelize $.Name }}{{ else 
 }
       {{ end }}
       {{ if .ItemsEnum }}
+          {{ $gotype := .Items.GoType }}
+          {{ $propname := .Name }}
+type {{ .Items.GoType }} string
+const (
+          {{ range .ItemsEnum }}
+  // {{ pascalize $.Name }}{{ pascalize $propname }}{{ pascalize . }} captures enum value {{ printf "%q" . }}
+	{{ pascalize $.Name }}{{ pascalize $propname }}{{ pascalize . }} {{ $gotype }} = {{ printf "%q" . }}
+          {{ end }}
+)
+
+var {{ $gotype }}Values = []string {
+  {{range .ItemsEnum -}}
+  "{{ . }}",
+  {{ end }}
+}
+
+func (e {{ $gotype }}) IsValid() bool {
+  for _, v := range {{ $gotype }}Values {
+    if v == string(e) {
+      return true
+    }
+  }
+  return false
+}
 var {{ camelize $.Name }}{{ pascalize .Name }}ItemsEnum []interface{}
 func init() {
   var res []{{ template "dereffedSchemaType" .Items }}
