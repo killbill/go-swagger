@@ -47,6 +47,8 @@ type KillbillDefaults interface {
   XKillbillComment() *string
   // Default Reason. If not set explicitly in params, this will be used.
   XKillbillReason() *string
+  // Default WithStackTrace. If not set explicitly in params, this will be used.
+  KillbillWithStackTrace() *bool
 }
 
 /*
@@ -98,7 +100,10 @@ func (a *Client) {{ pascalize .Name }}(ctx context.Context, params *{{ pascalize
       if params.XKillbillReason == nil && a.defaults.XKillbillReason() != nil {
         params.XKillbillReason = a.defaults.XKillbillReason()
       }
-    {{- end -}}
+    {{- end }}
+    if params.WithStackTrace == nil && a.defaults.KillbillWithStackTrace() != nil {
+      params.WithStackTrace = a.defaults.KillbillWithStackTrace()
+    }
   {{- end -}}
 
   {{ $length := len .SuccessResponses }}
