@@ -20,11 +20,12 @@ require (
 	github.com/go-openapi/analysis v0.19.4
 	github.com/go-openapi/errors v0.19.2
 	github.com/go-openapi/inflect v0.19.0
+	github.com/go-openapi/jsonreference v0.19.3 // indirect
 	github.com/go-openapi/loads v0.19.2
 	github.com/go-openapi/runtime v0.19.3
-	github.com/go-openapi/spec v0.19.2
+	github.com/go-openapi/spec v0.19.3
 	github.com/go-openapi/strfmt v0.19.2
-	github.com/go-openapi/swag v0.19.4
+	github.com/go-openapi/swag v0.19.6
 	github.com/go-openapi/validate v0.19.2
 	github.com/go-swagger/scan-repo-boundary v0.0.0-20180623220736-973b3573c013
 	github.com/golang/groupcache v0.0.0-20190702054246-869f871628b6 // indirect
@@ -36,7 +37,7 @@ require (
 	github.com/kr/pretty v0.1.0
 	github.com/kr/pty v1.1.8 // indirect
 	github.com/magiconair/properties v1.8.1 // indirect
-	github.com/mailru/easyjson v0.0.0-20190626092158-b2ccc519800e // indirect
+	github.com/mailru/easyjson v0.7.0 // indirect
 	github.com/pelletier/go-toml v1.4.0 // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/pquerna/cachecontrol v0.0.0-20180517163645-1555304b9b35 // indirect
@@ -58,12 +59,12 @@ require (
 	golang.org/x/exp v0.0.0-20190627132806-fd42eb6b336f // indirect
 	golang.org/x/image v0.0.0-20190703141733-d6a02ce849c9 // indirect
 	golang.org/x/mobile v0.0.0-20190607214518-6fa95d984e88 // indirect
-	golang.org/x/net v0.0.0-20190628185345-da137c7871d7
+	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/sys v0.0.0-20190626221950-04f50cda93cb // indirect
 	golang.org/x/tools v0.0.0-20190706070813-72ffa07ba3db
 	google.golang.org/genproto v0.0.0-20190701230453-710ae3a149df // indirect
 	google.golang.org/grpc v1.22.0 // indirect
 	gopkg.in/square/go-jose.v2 v2.3.1 // indirect
-	gopkg.in/yaml.v2 v2.2.2
+	gopkg.in/yaml.v2 v2.2.7
 )
